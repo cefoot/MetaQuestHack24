@@ -1,17 +1,38 @@
-Copyright (c) Meta Platforms, Inc. and affiliates.
-All rights reserved.
+Proprietary Software License Agreement
 
-Licensed under the Oculus SDK License Agreement (the "License");
-you may not use the Oculus SDK except in compliance with the License,
-which is provided at the time of installation or download, or which
-otherwise accompanies this software in either electronic or hard copy form.
+Important - read carefully:
 
-You may obtain a copy of the License at
+This license agreement ("Agreement") is a legal agreement between you (either an individual or a single entity) and [Your Company or Your Name] ("Licensor"), the author and owner of "[Myosotis]", a mixed reality organizational assistant software ("Software").
 
-https://developer.oculus.com/licenses/oculussdk/
+By installing, copying, or otherwise using the Software, you agree to be bound by the terms of this Agreement. If you do not agree to the terms of this Agreement, do not install or use the Software.
 
-Unless required by applicable law or agreed to in writing, the Oculus SDK
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+1. Grant of License:
+The Licensor hereby grants you a non-exclusive, non-transferable license to use the Software in accordance with the terms of this Agreement. You may:
+- Install and use the Software for personal or internal business purposes on a single computer or device.
+- Make one copy of the Software for backup or archival purposes.
+
+2. Restrictions:
+You may not:
+- Modify, translate, adapt, or otherwise create derivative works or improvements, whether or not patentable, of the Software.
+- Reverse engineer, disassemble, decompile, decode, or otherwise attempt to derive or gain access to the source code of the Software.
+- Rent, lease, lend, sell, sublicense, assign, distribute, publish, transfer, or otherwise make available the Software, or any features or functionality of the Software, to any third party for any reason.
+- Remove, delete, alter, or obscure any trademarks or any copyright, proprietary, or legal notices included in the Software.
+
+3. Intellectual Property:
+The Software and all copies thereof are and will remain the property of the Licensor. The structure, organization, and code of the Software are valuable trade secrets and confidential information of the Licensor. The Software is licensed, not sold.
+
+4. Disclaimer of Warranties:
+The Software is provided "AS IS," without warranty of any kind. The Licensor disclaims all warranties, either express or implied, including but not limited to implied warranties of merchantability and fitness for a particular purpose.
+
+5. Limitation of Liability:
+In no event will the Licensor be liable for any damages, including without limitation, indirect, incidental, special, consequential, or punitive damages arising out of the use of or inability to use the Software, even if advised of the possibility of such damages.
+
+6. Termination:
+This Agreement is effective until terminated. You can terminate it at any time by destroying the Software, together with all copies thereof. This Agreement will also terminate immediately without notice from the Licensor if you fail to comply with any provision of this Agreement. Upon termination, you must destroy all copies of the Software.
+
+7. Governing Law:
+This Agreement shall be governed by and construed in accordance with the laws of [Your Country/State].
+
+Should you have any questions concerning this Agreement, you may contact [Your Contact Information].
+
+By installing and using the Software, you acknowledge that you have read, understood, and agree to be bound by the terms and conditions of this Agreement.
