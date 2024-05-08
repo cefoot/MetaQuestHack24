@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class WristUpController : MonoBehaviour
 {
     [Serializable]
-    public class PositionUnityEvent : UnityEvent<Vector3>{}
+    public class PositionUnityEvent : UnityEvent<Vector3> { }
 
     public Transform handPalmLeft; // Assign this to the palm bone
     public Transform handPalmRight; // Assign this to the palm bone
@@ -54,7 +54,7 @@ public class WristUpController : MonoBehaviour
             case ShowState.LeftHand:
                 if (Vector3.Dot(handPalmLeft.up, Camera.main.transform.forward) > Treshold)
                 {//facing away
-                    if (Vector3.Dot(handPalmRight.up, Camera.main.transform.forward) > Treshold)
+                    if (Vector3.Dot(-handPalmRight.up, Camera.main.transform.forward) > Treshold)
                     {//facing away
                         return ShowState.None;
                     }
@@ -62,7 +62,7 @@ public class WristUpController : MonoBehaviour
                 }
                 return ShowState.LeftHand;
             case ShowState.RightHand:
-                if (Vector3.Dot(handPalmRight.up, Camera.main.transform.forward) > Treshold)
+                if (Vector3.Dot(-handPalmRight.up, Camera.main.transform.forward) > Treshold)
                 {//facing away
                     if (Vector3.Dot(handPalmLeft.up, Camera.main.transform.forward) > Treshold)
                     {//facing away
@@ -98,7 +98,7 @@ public class WristUpController : MonoBehaviour
             case ShowState.RightHand:
                 if (lastState != CurrentShowState) RightHandPalmFacingCam?.Invoke(MenuPosRightHand);
                 transform.position = handPalmRight.position;
-                transform.rotation = handPalmRight.rotation;
+                transform.rotation = Quaternion.LookRotation(handPalmRight.forward, -handPalmRight.up);
                 break;
         }
     }
