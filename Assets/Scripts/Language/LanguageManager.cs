@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Meta.WitAi.Composer;
 using Meta.WitAi.Events;
 using Meta.WitAi.TTS.Utilities;
@@ -23,6 +24,7 @@ public class LanguageManager : MonoBehaviour
     public TTSSpeaker TTSSpeaker;
 
     private Dictionary<string, Anchoring> _locationsMap = new Dictionary<string, Anchoring>();
+    private GameObject _navigationTarget = null;
 
 
     // Start is called before the first frame update
@@ -113,11 +115,38 @@ public class LanguageManager : MonoBehaviour
     IEnumerator HandleActionFindThingRoutine(ComposerSessionData composerSessionData)
     {
         yield return new WaitForSeconds(5f);
-        composerSessionData.contextMap.SetData("location_found", true);
-        composerSessionData.composer.SendContextMapEvent();
-        // composerSessionData.contextMap.SetData("composer_wants_state", false);
+        string thingDescription = composerSessionData.contextMap.GetData<string>("thing_to_find[0].value");
+        string locationUuid = FindUuidByDescription(thingDescription);
+        if (locationUuid.Length == 0)
+        {
+            // thing not found
+            composerSessionData.contextMap.SetData("location_found", false);
+            composerSessionData.contextMap.SetData("location_uuid", locationUuid);
+        }
+        else
+        {
+            composerSessionData.contextMap.SetData("location_found", true);
 
-        // set location navigation target
+        }
+
+        composerSessionData.composer.SendContextMapEvent();
+
+    }
+
+    private string FindUuidByDescription(string description)
+    {
+        var allAnchorings = FindObjectsByType<Anchoring>(FindObjectsSortMode.None);
+
+        var anchoring = allAnchorings.Where(anchoring => anchoring.Description.Equals(description, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+
+        if (anchoring == null)
+        {
+            return string.Empty;
+        }
+        else
+        {
+            return anchoring.GetAnchorUuid();
+        }
     }
 
     public void HandleActionNavigateToThing(ComposerSessionData composerSessionData)
@@ -127,6 +156,10 @@ public class LanguageManager : MonoBehaviour
 
     IEnumerator HandleActionNavigateToThingRoutine(ComposerSessionData composerSessionData)
     {
+        string locationUuid = composerSessionData.contextMap.GetData<string>("location_uuid");
+
+        // TODO show navigation based on locationUuid
+
         yield return new WaitForSeconds(5f);
         composerSessionData.contextMap.SetData("location_reached", true);
         composerSessionData.composer.SendContextMapEvent();
@@ -136,8 +169,6 @@ public class LanguageManager : MonoBehaviour
     static readonly string DESCRIPTION_UPDATE_QUESTION = "What would you like to store in this location?";
     public void HandleUpdateLocationContents(Anchoring anchoredObject)
     {
-        // AddAILine(DESCRIPTION_UPDATE_QUESTION);
-        // TTSSpeaker.Speak(DESCRIPTION_UPDATE_QUESTION);
 
         string locationUuid = anchoredObject.GetAnchorUuid();
         _locationsMap.Add(locationUuid, anchoredObject);
