@@ -8,6 +8,7 @@ using Meta.WitAi.TTS.Utilities;
 using Oculus.Voice;
 using Oculus.Voice.Composer;
 using Oculus.Voice.Toolkit;
+using UnityEngine.Search;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -133,19 +134,39 @@ public class LanguageManager : MonoBehaviour
 
     }
 
+    private class FuzzySearchResult
+    {
+        public Anchoring obj;
+        public long score;
+    }
+
     private string FindUuidByDescription(string description)
     {
         var allAnchorings = FindObjectsByType<Anchoring>(FindObjectsSortMode.None);
 
-        var anchoring = allAnchorings.Where(anchoring => anchoring.Description.Equals(description, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+        // search for the best match using FuzzySearch.FuzzyMatch
+        var results = new List<FuzzySearchResult>();
+        foreach (var anchoring in allAnchorings)
+        {
+            long score = 0;
+            var matches = new List<int>();
 
-        if (anchoring == null)
+            FuzzySearch.FuzzyMatch(description, anchoring.Description, ref score, matches);
+            if (score > 0)
+            {
+                results.Add(new FuzzySearchResult { obj = anchoring, score = score });
+            }
+        }
+
+        var sorted = results.OrderByDescending(x => x.score).FirstOrDefault();
+
+        if (sorted == null)
         {
             return string.Empty;
         }
         else
         {
-            return anchoring.GetAnchorUuid();
+            return sorted.obj.GetAnchorUuid();
         }
     }
 
