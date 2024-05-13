@@ -12,7 +12,26 @@ public class Anchoring : MonoBehaviour
     public UnityEvent OnAnchorLoadCompleted { get => _onAnchorLoadCompleted; set => _onAnchorLoadCompleted = value; }
     public UnityEvent<OVRSpatialAnchor.OperationResult> OnAnchorsEraseAllCompleted { get => _onAnchorsEraseAllCompleted; set => _onAnchorsEraseAllCompleted = value; }
     public UnityEvent<OVRSpatialAnchor, OVRSpatialAnchor.OperationResult> OnAnchorEraseCompleted { get => _onAnchorEraseCompleted; set => _onAnchorEraseCompleted = value; }
+
     private OVRSpatialAnchor _anchor;
+    public string GetAnchorUuid()
+    {
+        return _anchor.Uuid.ToString();
+    }
+
+    // natural language description of the anchored object
+    private string _description = string.Empty;
+
+    public string Description
+    {
+        get => _description;
+        set
+        {
+            _description = value;
+            SaveDescription();
+        }
+    }
+
     protected virtual OVRSpatialAnchor.EraseOptions EraseOptions => new() { Storage = OVRSpace.StorageLocation.Local };
     private static HashSet<OVRSpatialAnchor> _globalAnchorList = new HashSet<OVRSpatialAnchor>();
     private const string PLAYER_PREF_ANCHOR = "StorageAnchors";
@@ -33,6 +52,38 @@ public class Anchoring : MonoBehaviour
             _globalAnchorList.Remove(_anchor);
         }
     }
+
+
+    #region Descriptions
+
+    private void SaveDescription()
+    {
+        if (_anchor != null)
+        {
+            PlayerPrefs.SetString($"Desc_{_anchor.Uuid}", _description);
+            PlayerPrefs.Save();
+            Debug.Log("Internal description: " + _description + "; Description saved: " + PlayerPrefs.GetString($"Desc_{_anchor.Uuid}", string.Empty));
+        }
+    }
+
+    private void LoadDescription()
+    {
+        if (_anchor != null)
+        {
+            _description = PlayerPrefs.GetString($"Desc_{_anchor.Uuid}", string.Empty);
+        }
+    }
+
+    private void EraseDescription()
+    {
+        if (_anchor != null)
+        {
+            PlayerPrefs.DeleteKey($"Desc_{_anchor.Uuid}");
+            PlayerPrefs.Save();
+        }
+    }
+
+    #endregion
 
     #region Loading
 
@@ -98,6 +149,8 @@ public class Anchoring : MonoBehaviour
             var anchor = spatialAnchorGo.gameObject.AddComponent<OVRSpatialAnchor>();
             unboundAnchor.BindTo(anchor);
             spatialAnchorGo._anchor = anchor;
+            // load linguistic description
+            spatialAnchorGo.LoadDescription();
             _globalAnchorList.Add(anchor);
             spatialAnchorGo.OnAnchorLoadCompleted?.Invoke();
         }

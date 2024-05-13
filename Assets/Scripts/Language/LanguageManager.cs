@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Meta.WitAi.Composer;
 using Meta.WitAi.Events;
+using Meta.WitAi.TTS.Utilities;
 using Oculus.Voice;
 using Oculus.Voice.Composer;
 using Oculus.Voice.Toolkit;
@@ -19,6 +20,9 @@ public class LanguageManager : MonoBehaviour
     public BuildingBlockBridge BuildingBlockBridge;
 
     public AppComposerExperience AppComposerExperience;
+    public TTSSpeaker TTSSpeaker;
+
+    private Dictionary<string, Anchoring> _locationsMap = new Dictionary<string, Anchoring>();
 
 
     // Start is called before the first frame update
@@ -72,15 +76,20 @@ public class LanguageManager : MonoBehaviour
         }
     }
 
-    IEnumerator AISpeakRoutine(ComposerSessionData composerSessionData)
+    private void AddAILine(string message)
     {
-        yield return new WaitForSeconds(0.5f);
         ConversationHandler?.AddNewMessage(
             new ConversationHandler.ConversationData
             {
                 Type = ConversationHandler.ConversationType.AI,
-                message = composerSessionData.responseData.responsePhrase
+                message = message
             });
+    }
+
+    IEnumerator AISpeakRoutine(ComposerSessionData composerSessionData)
+    {
+        yield return new WaitForSeconds(0.5f);
+        AddAILine(composerSessionData.responseData.responsePhrase);
     }
 
     public void HandleComposerExpectsInput(ComposerSessionData composerSessionData)
@@ -123,4 +132,33 @@ public class LanguageManager : MonoBehaviour
         composerSessionData.composer.SendContextMapEvent();
 
     }
+
+    static readonly string DESCRIPTION_UPDATE_QUESTION = "What would you like to store in this location?";
+    public void HandleUpdateLocationContents(Anchoring anchoredObject)
+    {
+        // AddAILine(DESCRIPTION_UPDATE_QUESTION);
+        // TTSSpeaker.Speak(DESCRIPTION_UPDATE_QUESTION);
+
+        string locationUuid = anchoredObject.GetAnchorUuid();
+        _locationsMap.Add(locationUuid, anchoredObject);
+
+        // start a new composer session, set context and activate listening
+        AppComposerExperience.StartSession();
+        AppComposerExperience.CurrentContextMap.ClearAllNonReservedData();
+        AppComposerExperience.CurrentContextMap.SetData("modifying_object_description", true);
+        AppComposerExperience.CurrentContextMap.SetData("location_uuid", locationUuid);
+        AppComposerExperience.SendContextMapEvent();
+    }
+
+    public void HandleActionSaveNewDescription(ComposerSessionData composerSessionData)
+    {
+
+        string locationUuid = composerSessionData.contextMap.GetData<string>("location_uuid");
+        string newDescription = composerSessionData.contextMap.GetData<string>("new_thing_description[0].value");
+        Debug.Log("HandleActionSaveNewDescription: locationUuid=" + locationUuid + ", newDescription=" + newDescription);
+        _locationsMap[locationUuid].Description = newDescription;
+        _locationsMap.Remove(locationUuid);
+    }
+
+
 }
