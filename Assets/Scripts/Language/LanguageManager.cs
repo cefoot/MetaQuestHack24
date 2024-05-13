@@ -24,6 +24,9 @@ public class LanguageManager : MonoBehaviour
     public AppComposerExperience AppComposerExperience;
     public TTSSpeaker TTSSpeaker;
 
+    public LineRenderer GuidanceLine;
+    public Transform GuidanceReference;
+
     private Dictionary<string, Anchoring> _locationsMap = new Dictionary<string, Anchoring>();
     private GameObject _navigationTarget = null;
 
@@ -134,39 +137,59 @@ public class LanguageManager : MonoBehaviour
 
     }
 
+    public static int LevenshteinDistance(string s, string t)
+    {
+        int n = s.Length;
+        int m = t.Length;
+        int[,] d = new int[n + 1, m + 1];
+
+        if (n == 0) return m;
+        if (m == 0) return n;
+
+        for (int i = 0; i <= n; d[i, 0] = i++) { }
+        for (int j = 0; j <= m; d[0, j] = j++) { }
+
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = 1; j <= m; j++)
+            {
+                int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
+                d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
+            }
+        }
+        return d[n, m];
+    }
+
+
     private class FuzzySearchResult
     {
         public Anchoring obj;
         public long score;
     }
 
-    private string FindUuidByDescription(string description)
+    private string FindUuidByDescription(string searchString)
     {
         var allAnchorings = FindObjectsByType<Anchoring>(FindObjectsSortMode.None);
 
         // search for the best match using FuzzySearch.FuzzyMatch
         var results = new List<FuzzySearchResult>();
-        foreach (var anchoring in allAnchorings)
-        {
-            long score = 0;
-            var matches = new List<int>();
-
-            FuzzySearch.FuzzyMatch(description, anchoring.Description, ref score, matches);
-            if (score > 0)
+        var firstItm = allAnchorings
+            .Select(itm => new
             {
-                results.Add(new FuzzySearchResult { obj = anchoring, score = score });
-            }
-        }
+                Txt = itm.Description,
+                UUID = itm.GetAnchorUuid(),
+                Distance = LevenshteinDistance(searchString, itm.Description)
+            })
+            .OrderBy(x => x.Distance)
+            .FirstOrDefault();
 
-        var sorted = results.OrderByDescending(x => x.score).FirstOrDefault();
-
-        if (sorted == null)
+        if (firstItm == null)
         {
             return string.Empty;
         }
         else
         {
-            return sorted.obj.GetAnchorUuid();
+            return firstItm.UUID;
         }
     }
 
@@ -179,10 +202,26 @@ public class LanguageManager : MonoBehaviour
     {
         string locationUuid = composerSessionData.contextMap.GetData<string>("location_uuid");
 
-        // TODO show navigation based on locationUuid
-
-        yield return new WaitForSeconds(5f);
-        composerSessionData.contextMap.SetData("location_reached", true);
+        var obj = FindObjectsByType<Anchoring>(FindObjectsSortMode.None).Where(a => a.GetAnchorUuid() == locationUuid).FirstOrDefault();
+        if (!obj)
+        {
+            composerSessionData.contextMap.SetData("location_reached", false);
+        }
+        else
+        {
+            GuidanceLine.enabled = true;
+            while (Vector3.Distance(GuidanceReference.position, obj.transform.position) > 1)
+            {
+                GuidanceLine.SetPositions(new[]
+                {
+                    GuidanceReference.position,
+                    obj.transform.position
+                });
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+            GuidanceLine.enabled = false;
+            composerSessionData.contextMap.SetData("location_reached", true);
+        }
         composerSessionData.composer.SendContextMapEvent();
 
     }
