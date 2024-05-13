@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Meta.WitAi.Composer;
 using Meta.WitAi.Events;
+using Oculus.Voice;
+using Oculus.Voice.Composer;
 using Oculus.Voice.Toolkit;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,6 +17,9 @@ public class LanguageManager : MonoBehaviour
     public ConversationHandler ConversationHandler;
 
     public BuildingBlockBridge BuildingBlockBridge;
+
+    public AppComposerExperience AppComposerExperience;
+
 
     // Start is called before the first frame update
     void Start()
@@ -55,10 +61,15 @@ public class LanguageManager : MonoBehaviour
             }
         );
     }
+
     public void HandleComposerSpeakPhrase(ComposerSessionData composerSessionData)
     {
-        // hack: wait for 0.5 second before AI speaks, because the human transcription event is (strangely) fired after the Composer Speak Phrase event
-        StartCoroutine(AISpeakRoutine(composerSessionData));
+        if (composerSessionData.responseData.responseIsFinal)
+        {
+
+            // hack: wait for 0.5 second before AI speaks, because the human transcription event is (strangely) fired after the Composer Speak Phrase event
+            StartCoroutine(AISpeakRoutine(composerSessionData));
+        }
     }
 
     IEnumerator AISpeakRoutine(ComposerSessionData composerSessionData)
@@ -70,5 +81,46 @@ public class LanguageManager : MonoBehaviour
                 Type = ConversationHandler.ConversationType.AI,
                 message = composerSessionData.responseData.responsePhrase
             });
+    }
+
+    public void HandleComposerExpectsInput(ComposerSessionData composerSessionData)
+    {
+        if (composerSessionData.contextMap.HasData("composer_wants_state") && composerSessionData.contextMap.GetData<bool>("composer_wants_state"))
+        {
+            // nothing
+        }
+        else
+        {
+            // AppComposerExperience.AppVoiceExperience.Activate();
+            BuildingBlockBridge.TriggerInvocation(true);
+        }
+    }
+
+    public void HandleActionFindThing(ComposerSessionData composerSessionData)
+    {
+        StartCoroutine(HandleActionFindThingRoutine(composerSessionData));
+    }
+
+    IEnumerator HandleActionFindThingRoutine(ComposerSessionData composerSessionData)
+    {
+        yield return new WaitForSeconds(5f);
+        composerSessionData.contextMap.SetData("location_found", true);
+        composerSessionData.composer.SendContextMapEvent();
+        // composerSessionData.contextMap.SetData("composer_wants_state", false);
+
+        // set location navigation target
+    }
+
+    public void HandleActionNavigateToThing(ComposerSessionData composerSessionData)
+    {
+        StartCoroutine(HandleActionNavigateToThingRoutine(composerSessionData));
+    }
+
+    IEnumerator HandleActionNavigateToThingRoutine(ComposerSessionData composerSessionData)
+    {
+        yield return new WaitForSeconds(5f);
+        composerSessionData.contextMap.SetData("location_reached", true);
+        composerSessionData.composer.SendContextMapEvent();
+
     }
 }

@@ -3353,7 +3353,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29dee0a584a9abc4d8010bb69773dade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actionEvents: []
+  _actionEvents:
+  - actionID: app_find_thing
+    actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1948435993}
+          m_TargetAssemblyTypeName: LanguageManager, Assembly-CSharp
+          m_MethodName: HandleActionFindThing
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - actionID: app_navigate_to_thing
+    actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1948435993}
+          m_TargetAssemblyTypeName: LanguageManager, Assembly-CSharp
+          m_MethodName: HandleActionNavigateToThing
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &159850689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3390,7 +3422,7 @@ MonoBehaviour:
   _handleActions: 1
   continueDelay: 0
   contextMapEventKey: state_event
-  expectInputAutoActivation: 1
+  expectInputAutoActivation: 0
   endSessionOnCompletion: 0
   clearContextMapOnCompletion: 0
   editorVersionTag: 
@@ -3445,18 +3477,6 @@ MonoBehaviour:
     OnComposerResponse:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2015657550}
-          m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
-          m_MethodName: set_text
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Composer Response
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 2015657552}
           m_TargetAssemblyTypeName: ComposerEventLogger, Assembly-CSharp
           m_MethodName: HandleComposerResponse
@@ -3472,18 +3492,6 @@ MonoBehaviour:
     OnComposerError:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2015657550}
-          m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
-          m_MethodName: set_text
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Composer Error
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 2015657552}
           m_TargetAssemblyTypeName: ComposerEventLogger, Assembly-CSharp
           m_MethodName: HandleComposerError
@@ -3513,7 +3521,19 @@ MonoBehaviour:
           m_CallState: 2
     OnComposerExpectsInput:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1948435993}
+          m_TargetAssemblyTypeName: LanguageManager, Assembly-CSharp
+          m_MethodName: HandleComposerExpectsInput
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnComposerSpeakPhrase:
       m_PersistentCalls:
         m_Calls:
@@ -10689,7 +10709,7 @@ PrefabInstance:
     - target: {fileID: 6133366947593943920, guid: a76198998b9bc6945b41bc2f16827428,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 127.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6824620083900277953, guid: a76198998b9bc6945b41bc2f16827428,
         type: 3}
@@ -10730,7 +10750,7 @@ PrefabInstance:
     - target: {fileID: 6824620083900278012, guid: a76198998b9bc6945b41bc2f16827428,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6824620083900278012, guid: a76198998b9bc6945b41bc2f16827428,
         type: 3}
@@ -10825,7 +10845,7 @@ PrefabInstance:
     - target: {fileID: 6824620083900278013, guid: a76198998b9bc6945b41bc2f16827428,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8094051712499596096, guid: a76198998b9bc6945b41bc2f16827428,
         type: 3}
@@ -31657,7 +31677,6 @@ GameObject:
   - component: {fileID: 1948435991}
   - component: {fileID: 1948435992}
   - component: {fileID: 1948435993}
-  - component: {fileID: 1948435994}
   m_Layer: 0
   m_Name: Voice
   m_TagString: Untagged
@@ -31711,7 +31730,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  seconds: 5
+  seconds: 2
 --- !u!114 &1948435993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31727,51 +31746,7 @@ MonoBehaviour:
   ConversationHandler: {fileID: 2146900358857273103}
   BuildingBlockBridge: {fileID: 11400000, guid: 3412024bf89df604eb00966b729b3203,
     type: 2}
---- !u!114 &1948435994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948435990}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dd0cd0da4e15df4dbf2394b12c1081f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _buildingBlockBridge: {fileID: 0}
-  registerStates: -1
-  events:
-  - name: Listening
-    stateMask: 4
-    uiEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - name: MicOff
-    stateMask: 1
-    uiEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - name: MicOn
-    stateMask: 2
-    uiEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - name: StartProcessing
-    stateMask: 8
-    uiEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - name: Response
-    stateMask: 16
-    uiEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - name: Error
-    stateMask: 32
-    uiEvent:
-      m_PersistentCalls:
-        m_Calls: []
+  AppComposerExperience: {fileID: 159850690}
 --- !u!1 &1949258184
 GameObject:
   m_ObjectHideFlags: 0
