@@ -1,12 +1,13 @@
 {
   "dependencies": {
     "com.meta.witai.toolkit": {
-      "version": "file:C:/Users/macie/Documents/Code/ext/voicesdk-toolkit-unity",
+      "version": "https://github.com/mz8i/voicesdk-toolkit-unity.git",
       "depth": 0,
-      "source": "local",
+      "source": "git",
       "dependencies": {
         "com.meta.xr.sdk.voice": "64.0.0"
-      }
+      },
+      "hash": "927466dc96d116f443dd2a3c0dfd72929e859b63"
     },
     "com.meta.xr.mrutilitykit": {
       "version": "64.0.0",

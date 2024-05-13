@@ -20,17 +20,27 @@ MonoBehaviour:
     isPrivate: 1
     createdAt: 2024-05-08T04:15:40-0700
     trainingStatus: 1
-    lastTrainDuration: 0
-    lastTrainedAt: 1969-12-31T16:00:00-0800
-    nextTrainAt: 1969-12-31T16:00:00-0800
+    lastTrainDuration: 52
+    lastTrainedAt: 2024-05-12T22:12:18-0700
+    nextTrainAt: 2024-05-12T22:11:26-0700
     intents:
     - id: 440262465365966
       name: find_thing
-      entities: []
+      entities:
+      - name: thing_to_find:thing_to_find
+        id: 1367882967206573
     - id: 372587581870591
       name: new_thing_location
       entities: []
-    entities: []
+    entities:
+    - name: thing_to_find
+      id: 956031436168768
+      lookups:
+      - free-text
+      roles:
+      - name: thing_to_find
+        id: 1367882967206573
+      keywords: []
     traits: []
     versionTags: []
     voices:
@@ -555,13 +565,13 @@ MonoBehaviour:
     _event: 
     _converse: 
   isDemoOnly: 0
-  useConduit: 1
+  useConduit: 0
   _manifestLocalPath: ConduitManifest-50b77d76-201f-4c6f-a204-d8bafad2f44d.json
   excludedAssemblies:
   - Oculus.Voice.Demo, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Meta.WitAi.Samples, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   relaxedResolution: 0
-  _lastRefreshSeconds: 1715543524.1768756
+  _lastRefreshSeconds: 1715579164.2954023
 --- !u!114 &2145009384765481237
 MonoBehaviour:
   m_ObjectHideFlags: 0
