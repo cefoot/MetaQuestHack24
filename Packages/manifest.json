@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.meta.witai.toolkit": "file:C:/Users/macie/Documents/Code/ext/voicesdk-toolkit-unity",
     "com.meta.xr.sdk.all": "64.0.0",
     "com.meta.xr.sdk.core": "64.0.0",
     "com.meta.xr.sdk.platform": "63.0.0",

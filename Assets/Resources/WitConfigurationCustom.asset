@@ -23,7 +23,13 @@ MonoBehaviour:
     lastTrainDuration: 0
     lastTrainedAt: 1969-12-31T16:00:00-0800
     nextTrainAt: 1969-12-31T16:00:00-0800
-    intents: []
+    intents:
+    - id: 440262465365966
+      name: find_thing
+      entities: []
+    - id: 372587581870591
+      name: new_thing_location
+      entities: []
     entities: []
     traits: []
     versionTags: []
@@ -555,7 +561,7 @@ MonoBehaviour:
   - Oculus.Voice.Demo, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Meta.WitAi.Samples, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   relaxedResolution: 0
-  _lastRefreshSeconds: 1715176274.0813503
+  _lastRefreshSeconds: 1715543524.1768756
 --- !u!114 &2145009384765481237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,4 +574,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1c2918ba0e7451694416d42d69e0944, type: 3}
   m_Name: WitComposerData
   m_EditorClassIdentifier: 
-  canvases: []
+  canvases:
+  - canvasName: Draft
+    contextMap:
+      server: []
+      client: []
+      shared: []
+    actions: []

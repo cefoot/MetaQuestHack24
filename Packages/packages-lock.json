@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.meta.witai.toolkit": {
+      "version": "file:C:/Users/macie/Documents/Code/ext/voicesdk-toolkit-unity",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.meta.xr.sdk.voice": "64.0.0"
+      }
+    },
     "com.meta.xr.mrutilitykit": {
       "version": "64.0.0",
       "depth": 1,
