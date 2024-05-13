@@ -63,6 +63,7 @@ public class LanguageManager : MonoBehaviour
 
     public void HandleFullTranscription(string transcription)
     {
+        ConversationHandler?.gameObject.SetActive(true);
         ConversationHandler?.AddNewMessage(
             new ConversationHandler.ConversationData
             {
@@ -130,6 +131,7 @@ public class LanguageManager : MonoBehaviour
         else
         {
             composerSessionData.contextMap.SetData("location_found", true);
+            composerSessionData.contextMap.SetData("location_uuid", locationUuid);
 
         }
 
@@ -201,10 +203,13 @@ public class LanguageManager : MonoBehaviour
     IEnumerator HandleActionNavigateToThingRoutine(ComposerSessionData composerSessionData)
     {
         string locationUuid = composerSessionData.contextMap.GetData<string>("location_uuid");
+        // ConversationHandler.AddNewMessage(new ConversationHandler.ConversationData { message = "UUID:" + locationUuid, Type = ConversationHandler.ConversationType.AI });
 
-        var obj = FindObjectsByType<Anchoring>(FindObjectsSortMode.None).Where(a => a.GetAnchorUuid() == locationUuid).FirstOrDefault();
+        var obj = FindObjectsByType<Anchoring>(FindObjectsSortMode.None).Where(a => a.GetAnchorUuid().Equals(locationUuid, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
         if (!obj)
         {
+
+            ConversationHandler.AddNewMessage(new ConversationHandler.ConversationData { message = "nothing found.....", Type = ConversationHandler.ConversationType.AI });
             composerSessionData.contextMap.SetData("location_reached", false);
         }
         else
